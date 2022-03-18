@@ -13,17 +13,17 @@ ProductTag.init(
       autoIncrement: true,
     },
     product_id: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       references: {
         // This references the `product` model, which we set in `Product.js` as its `modelName` property
-        model: "product",
+        model: "Product",
         key: "id",
       },
     },
     tag_id: {
       type: DataTypes.INTEGER,
       references: {
-        model: "tag",
+        model: "Tag",
         key: "id",
       },
     },
