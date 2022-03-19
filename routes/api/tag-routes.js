@@ -5,36 +5,28 @@ const { Tag, Product, ProductTag } = require("../../models");
 
 router.get("/", async (req, res) => {
   try {
-    const userData = await Tag.findAll();
-    res.status(200).json(userData);
+    const tagData = await Tag.findAll({
+      include: [{ model: Product, through: ProductTag }],
+    });
+    res.status(200).json(tagData);
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-//========================================= start code
-// find a single tag by its `id`
-// be sure to include its associated Product data
 router.get("/:id", async (req, res) => {
-  try {
-    const userData = await Tag.findByPk(req.params.id);
-    if (!userData) {
-      res.status(404).json({ message: "No tag with this id!" });
-      return;
-    }
-    res.status(200).json(userData);
-  } catch (err) {
-    res.status(500).json(err);
-  }
+  const tagData = await Tag.findByPk(req.params.id);
+  return res.json(tagData);
+  // find a single product by its `id`
+  // be sure to include its associated Category and Tag data
 });
-//========================================= end code
 
 router.post("/", async (req, res) => {
   try {
-    const userData = await Tag.create({
+    const tagData = await Tag.create({
       tag_name: req.body.tag_name,
     });
-    res.status(200).json(userData);
+    res.status(200).json(tagData);
   } catch (err) {
     res.status(400).json(err);
   }
@@ -42,16 +34,16 @@ router.post("/", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   try {
-    const userData = await Tag.update(req.body, {
+    const tagData = await Tag.update(req.body, {
       where: {
         id: req.params.id,
       },
     });
-    if (!userData[0]) {
-      res.status(404).json({ message: "No tag with this id!" });
+    if (!tagData[0]) {
+      res.status(404).json({ message: "You broke category" });
       return;
     }
-    res.status(200).json(userData);
+    res.status(200).json(tagData);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -59,16 +51,16 @@ router.put("/:id", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   try {
-    const userData = await Tag.destroy({
+    const tagData = await Tag.destroy({
       where: {
         id: req.params.id,
       },
     });
-    if (!userData) {
-      res.status(404).json({ message: "No tag with this id!" });
+    if (!tagData) {
+      res.status(404).json({ message: "No user with this id!" });
       return;
     }
-    res.status(200).json(userData);
+    res.status(200).json(tagData);
   } catch (err) {
     res.status(500).json(err);
   }
